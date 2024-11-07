@@ -28,7 +28,8 @@ isOn = False
 MotorI = Motor(Ports.PORT6, 6/1, True)
 
 #pneumatics
-#Pneumatic1 = Pneumatic()
+Pneumatic1 = DigitalOut(brain.three_wire_port.a)
+Pneumatic2 = DigitalOut(brain.three_wire_port.b)
 
 #organize the motors into motor groups
 left_group = MotorGroup(MotorLf, MotorLrb, MotorLrt)
