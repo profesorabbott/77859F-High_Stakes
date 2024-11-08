@@ -25,7 +25,7 @@ MotorRrb = Motor(Ports.PORT5, 6/1, True)
 #intake variables and motor
 isForward = True
 isOn = False
-MotorI = Motor(Ports.PORT6, 6/1, True)
+MotorI = Motor(Ports.PORT7, 6/1, True)
 
 #pneumatics
 Pneumatic1 = DigitalOut(brain.three_wire_port.a)
