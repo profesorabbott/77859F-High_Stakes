@@ -23,11 +23,10 @@ MotorRrt = Motor(Ports.PORT6, 6/1, True)
 MotorRrb = Motor(Ports.PORT5, 6/1, False)
 
 #intake motor
-MotorI = Motor(Ports.PORT7, 6/1, True)
+MotorI = Motor(Ports.PORT7, 18/1, True)
 
 #pneumatics
 Pneumatic1 = DigitalOut(brain.three_wire_port.a)
-Pneumatic2 = DigitalOut(brain.three_wire_port.b)
 
 #organize the motors into motor groups
 left_group = MotorGroup(MotorLf, MotorLrb, MotorLrt)
@@ -66,13 +65,13 @@ def printDetails():
     wait(100,MSEC)
 
 def move():
-    MotorLf.set_velocity(controller.axis3.position(), PERCENT)
-    MotorLrt.set_velocity(controller.axis3.position(), PERCENT)
-    MotorLrb.set_velocity(controller.axis3.position(), PERCENT)
+    MotorLf.set_velocity(((controller.axis3.position()/100)**3)*100, PERCENT)
+    MotorLrt.set_velocity(((controller.axis3.position()/100)**3)*100, PERCENT)
+    MotorLrb.set_velocity(((controller.axis3.position()/100)**3)*100, PERCENT)
     
-    MotorRf.set_velocity(controller.axis2.position(), PERCENT)
-    MotorRrt.set_velocity(controller.axis2.position(), PERCENT)
-    MotorRrb.set_velocity(controller.axis2.position(), PERCENT)
+    MotorRf.set_velocity(((controller.axis2.position()/100)**3)*100, PERCENT)
+    MotorRrt.set_velocity(((controller.axis2.position()/100)**3)*100, PERCENT)
+    MotorRrb.set_velocity(((controller.axis2.position()/100)**3)*100, PERCENT)
     
     right_group.spin(FORWARD)
     left_group.spin(FORWARD)
@@ -95,10 +94,11 @@ def setIntakeDir():
     forwardCount()
 '''
 
-
-def runIntake():
+'''
+def intake():
     if countOn % 2 == 0:
         isOn = True
+        
     else:
         isOn = False
     
@@ -122,17 +122,83 @@ def runIntake():
                 MotorI.spin(REVERSE, 100, PERCENT)
     else:
         MotorI.stop()
+    
+
+def runIntake():
+    controller.buttonR2.pressed(intake)
+'''
+
+intakeCount = -1
+directionCount = -1
+direction = FORWARD
+intakeSpeed = 150
+
+def toggleIntake():
+    global intakeCount
+    print(intakeCount)
+    intakeCount *= -1
+
+def toggleIntakeDir():
+    global directionCount
+    global direction
+    directionCount *= -1
+    print(directionCount)
+    print(direction)
+    if directionCount > 0:
+        direction = FORWARD
+        intakeSpeed = 150
+    else:
+        direction = REVERSE
+        intakeSpeed = 75
 
 
+def intake():
+    brain.screen.clear_screen()
+    brain.screen.set_cursor(1,1)
+    brain.screen.print("entering the R1 loop")
+    brain.screen.next_row()
+    if controller.buttonR1.pressing:
+        brain.screen.print("in the R1 loop")
+        brain.screen.next_row()
+        toggleIntakeDir()
+        brain.screen.print("direction toggled")
+        brain.screen.next_row()
+        wait(0.5, SECONDS)
+        
+    brain.screen.print("entering the R2 loop")
+    brain.screen.next_row()
+    if controller.buttonR2.pressing:
+        brain.screen.print("in the R2 loop")
+        brain.screen.next_row()
+        toggleIntake()
+        brain.screen.print("intake toggled")
+        brain.screen.next_row()
+        wait(0.2, MSEC)
+        if intakeCount > 0:
+            brain.screen.print("intake on")
+            brain.screen.next_row()
+            MotorI.spin(direction, intakeSpeed, RPM)
+        else:
+            brain.screen.print("intake off")
+            brain.screen.next_row()
+            MotorI.stop()
+        
 
+def driver_control():
+    while True:
+        #move()
+        printDetails()
+        intake()
+
+def auton():
+    printDetails()
 
 #MAKE SURE THIS IS AT THE END!!!!!!!
-while True:
-    printDetails()
-    move()
-    controller.buttonR2.pressed(runIntake)
-    countForward+=1
+def main():
+    driver_control()
+    competion = Competition(driver_control, auton)
     
+main()
 
 
 
