@@ -15,16 +15,14 @@ from vex import *
 brain=Brain()
 
 #instantiate the left and right motors; f is front, rb is rear bottom, rt is rear top
-MotorLf = Motor(Ports.PORT3, 6/1, False)
+MotorLf = Motor(Ports.PORT3, 6/1, True)
 MotorLrt = Motor(Ports.PORT2, 6/1, False)
-MotorLrb = Motor(Ports.PORT1,  6/1, False)
-MotorRf = Motor(Ports.PORT4,  6/1, True)
+MotorLrb = Motor(Ports.PORT1,  6/1, True)
+MotorRf = Motor(Ports.PORT4,  6/1, False)
 MotorRrt = Motor(Ports.PORT6, 6/1, True)
-MotorRrb = Motor(Ports.PORT5, 6/1, True)
+MotorRrb = Motor(Ports.PORT5, 6/1, False)
 
-#intake variables and motor
-isForward = True
-isOn = False
+#intake motor
 MotorI = Motor(Ports.PORT7, 6/1, True)
 
 #pneumatics
@@ -68,59 +66,74 @@ def printDetails():
     wait(100,MSEC)
 
 def move():
-    '''while(controller.axis1.changed):
-       axis1Pos = int(controller.axis1.position)
-        velocity = axis1Pos
-        #drive.drive(FORWARD, velocity**1.75)
-        if(controller.axis2.changed):
-            if(controller.axis1.position >= 0 && controller.axis2.position >= 0):
-                velocity = math.sqrt((axis1Pos**2+controller.axis2.position**2)) * 1
-            elif(controller.axis1.position <= 0 | controller.axis2.position <= 0):
-                velocity = math.sqrt((axis1.position**2+axis2.position**2)) * -1
-        drive.drive(FORWARD, velocity'''
-    #if(controller.axis1.changed):
-    if(controller.axis2.position() > 0):
-        right_group.spin(FORWARD,(controller.axis2.position() * 0.5) ** 2,PERCENT)
-    elif(controller.axis2.position() == 0):
-        right_group.stop
-    else:
-        right_group.spin(REVERSE, (controller.axis2.position() * 0.5)**2, PERCENT)
+    MotorLf.set_velocity(controller.axis3.position(), PERCENT)
+    MotorLrt.set_velocity(controller.axis3.position(), PERCENT)
+    MotorLrb.set_velocity(controller.axis3.position(), PERCENT)
+    
+    MotorRf.set_velocity(controller.axis2.position(), PERCENT)
+    MotorRrt.set_velocity(controller.axis2.position(), PERCENT)
+    MotorRrb.set_velocity(controller.axis2.position(), PERCENT)
+    
+    right_group.spin(FORWARD)
+    left_group.spin(FORWARD)
 
-   # if(controller.axis3.changed):
-    if(controller.axis4.position() > 0):
-        left_group.spin(FORWARD,(controller.axis4.position() * 0.5) ** 2,PERCENT)
-    elif(controller.axis4.position() == 0):
-        left_group.stop
-    else:
-        left_group.spin(REVERSE, (controller.axis4.position() * 0.5)**2, PERCENT)
+countOn = 0
+countForward  = 0
+isOn = False
+global isForward
 
-'''    
+'''def forwardCount():
+
+    countForward += 1
+
+
+def setIntakeDir():
+    if countForward % 2 == 0:
+         return False
+    else:
+        return True
+    forwardCount()
+'''
+
+
 def runIntake():
-    if(isOn): # type: ignore
-        isOn = False
-        MotorI.stop()
-    else:
+    if countOn % 2 == 0:
         isOn = True
-        if(isForward == True):#type:ignore
-            if(controller.buttonR1.pressing == True):
+    else:
+        isOn = False
+    
+    if(controller.buttonR1.pressing):
+        isForward = True
+    elif(controller.buttonL1.pressing):
+        isForward = False
+    
+    if isOn:
+        if isForward:
+            if controller.buttonR1.pressing:
                 isForward = False
                 MotorI.spin(REVERSE, 100, PERCENT)
             else:
                 MotorI.spin(FORWARD, 100, PERCENT)
         else:
-            if(controller.buttonR1.pressing == True):
+            if controller.buttonR1.pressing:
                 isForward = True
                 MotorI.spin(FORWARD, 100, PERCENT)
             else:
                 MotorI.spin(REVERSE, 100, PERCENT)
+    else:
+        MotorI.stop()
 
-'''
+
+
 
 #MAKE SURE THIS IS AT THE END!!!!!!!
 while True:
     printDetails()
     move()
-   # controller.buttonR2.pressed(runIntake)
+    controller.buttonR2.pressed(runIntake)
+    countForward+=1
+    
+
 
 
         
