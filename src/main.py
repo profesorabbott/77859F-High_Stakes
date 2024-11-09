@@ -141,7 +141,6 @@ def toggleIntake():
     print(intakeCount)
     intakeCount *= -1
 
-
 def toggleIntakeDir():
     global directionCount 
     global direction
@@ -154,7 +153,6 @@ def toggleIntakeDir():
     else:
         direction = FORWARD
         intakeSpeed = 150
-
 
 def intake():
     brain.screen.clear_screen()
@@ -189,12 +187,20 @@ def intake():
         brain.screen.next_row()
         MotorI.stop()
     
+def pneumatic():
+    if controller.buttonL1.pressing:
+        Pneumatic1.set(True)
+        brain.screen.print("pneumatic open")
+    else:
+        Pneumatic1.set(False)
+        brain.screen.print("pneumatic close")
 
 def driver_control():
     while True:
         #move()
         printDetails()
-    controller.buttonR2.pressed(intake)
+        pneumatic()
+    #controller.buttonR2.pressed(intake)
 
 def auton():
     printDetails()
