@@ -127,7 +127,8 @@ def intake():
 def runIntake():
     controller.buttonR2.pressed(intake)
 '''
-
+global directionCount
+global direction
 intakeCount = -1
 directionCount = -1
 direction = FORWARD
@@ -138,12 +139,11 @@ def toggleIntake():
     print(intakeCount)
     intakeCount *= -1
 
+
 def toggleIntakeDir():
-    global directionCount
-    global direction
-    directionCount *= -1
+    directionCount *= -1 # type: ignore
     print(directionCount)
-    print(direction)
+    print(direction) # type: ignore
     if directionCount > 0:
         direction = FORWARD
         intakeSpeed = 150
