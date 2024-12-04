@@ -26,7 +26,7 @@ directionCount =-1
 direction =FORWARD
 
 #intake motor
-MotorI = Motor(Ports.PORT7, 18/1, True)
+#MotorI = Motor(Ports.PORT7, 18/1, True)
 
 #pneumatics
 Pneumatic1 = DigitalOut(brain.three_wire_port.a)
@@ -181,11 +181,11 @@ def intake():
         print('i am in intake count >0')
         brain.screen.print("intake on")
         brain.screen.next_row()
-        MotorI.spin(direction, intakeSpeed, RPM)
+        #MotorI.spin(direction, intakeSpeed, RPM)
     else:
         brain.screen.print("intake off")
         brain.screen.next_row()
-        MotorI.stop()
+        #MotorI.stop()
     
 def pneumatic():
     if controller.buttonL1.pressing:
@@ -197,7 +197,7 @@ def pneumatic():
 
 def driver_control():
     while True:
-        #move()
+        move()
         printDetails()
         pneumatic()
     #controller.buttonR2.pressed(intake)
