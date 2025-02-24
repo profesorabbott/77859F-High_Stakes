@@ -10,23 +10,10 @@
 # Library imports
 from vex import *
 from movement import *
+from intake import *
 
 # Brain should be defined by default
 brain=Brain()
-""""
-#instantiate the left and right motors; f is front, rb is rear bottom, rt is rear top
-MotorLf = Motor(Ports.PORT3, 6/1, True)
-MotorLrt = Motor(Ports.PORT2, 6/1, False)
-MotorLrb = Motor(Ports.PORT1,  6/1, True)
-MotorRf = Motor(Ports.PORT4,  6/1, False)
-MotorRrt = Motor(Ports.PORT6, 6/1, True)
-MotorRrb = Motor(Ports.PORT5, 6/1, False)
-
-directionCount =-1
-direction =FORWARD
-"""
-#intake motor
-#MotorI = Motor(Ports.PORT7, 18/1, True)
 
 #pneumatics
 Pneumatic1 = DigitalOut(brain.three_wire_port.a)
@@ -38,8 +25,6 @@ Pneumatic1 = DigitalOut(brain.three_wire_port.a)
 #initialize the drivetrain and controller
 drive = DriveTrain(left_group, right_group)
 controller = Controller()
-
-    
 
 # Begin project code
 def printDetails():
@@ -84,63 +69,6 @@ countForward  = 0
 isOn = False
 global isForward
 
-'''def forwardCount():
-
-    countForward += 1
-
-
-def setIntakeDir():
-    if countForward % 2 == 0:
-         return False
-    else:
-        return True
-    forwardCount()
-'''
-
-'''
-def intake():
-    if countOn % 2 == 0:
-        isOn = True
-        
-    else:
-        isOn = False
-    
-    if(controller.buttonR1.pressing):
-        isForward = True
-    elif(controller.buttonL1.pressing):
-        isForward = False
-    
-    if isOn:
-        if isForward:
-            if controller.buttonR1.pressing:
-                isForward = False
-                MotorI.spin(REVERSE, 100, PERCENT)
-            else:
-                MotorI.spin(FORWARD, 100, PERCENT)
-        else:
-            if controller.buttonR1.pressing:
-                isForward = True
-                MotorI.spin(FORWARD, 100, PERCENT)
-            else:
-                MotorI.spin(REVERSE, 100, PERCENT)
-    else:
-        MotorI.stop()
-    
-
-def runIntake():
-    controller.buttonR2.pressed(intake)
-'''
-
-intakeCount = -1
-#directionCount = -1
-#direction = DirectionType.FORWARD
-intakeSpeed = 150
-
-def toggleIntake():
-    global intakeCount
-    print(intakeCount)
-    intakeCount *= -1
-
 def toggleIntakeDir():
     global directionCount 
     global direction
@@ -173,7 +101,7 @@ def intake():
     print('i am in R2')
     brain.screen.print("in the R2 loop")
     brain.screen.next_row()
-    toggleIntake()
+    intake.toggleIntake()
     brain.screen.print("intake toggled")
     brain.screen.next_row()
     wait(0.2, MSEC)
