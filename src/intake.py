@@ -13,3 +13,14 @@ def toggleIntake():
     intakeCount *= -1
 
 def reverseIntakeDir():
+    global directionCount 
+    global direction
+    directionCount *= -1 
+    print(directionCount)
+    print(direction) # type: ignore
+    if directionCount > 0:
+        direction = REVERSE
+        intakeSpeed = 75
+    else:
+        direction = FORWARD
+        intakeSpeed = 150

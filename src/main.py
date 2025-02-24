@@ -69,18 +69,6 @@ countForward  = 0
 isOn = False
 global isForward
 
-def toggleIntakeDir():
-    global directionCount 
-    global direction
-    directionCount *= -1 
-    print(directionCount)
-    print(direction) # type: ignore
-    if directionCount > 0:
-        direction = REVERSE
-        intakeSpeed = 75
-    else:
-        direction = FORWARD
-        intakeSpeed = 150
 
 def intake():
     brain.screen.clear_screen()
@@ -90,7 +78,7 @@ def intake():
     if controller.buttonR1.pressing:
         brain.screen.print("in the R1 loop")
         brain.screen.next_row()
-        toggleIntakeDir()
+        #toggleIntakeDir()
         brain.screen.print("direction toggled")
         brain.screen.next_row()
         wait(0.5, SECONDS)
@@ -101,11 +89,11 @@ def intake():
     print('i am in R2')
     brain.screen.print("in the R2 loop")
     brain.screen.next_row()
-    intake.toggleIntake()
+    #toggleIntake()
     brain.screen.print("intake toggled")
     brain.screen.next_row()
     wait(0.2, MSEC)
-    if intakeCount > 0:
+    """ if intakeCount > 0:
         print('i am in intake count >0')
         brain.screen.print("intake on")
         brain.screen.next_row()
@@ -114,7 +102,7 @@ def intake():
         brain.screen.print("intake off")
         brain.screen.next_row()
         #MotorI.stop()
-    
+    """
 def pneumatic():
     if controller.buttonL1.pressing:
         Pneumatic1.set(True)
