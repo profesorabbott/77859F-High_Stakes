@@ -9,11 +9,11 @@
 
 # Library imports
 from vex import *
-
+from movement import *
 
 # Brain should be defined by default
 brain=Brain()
-
+""""
 #instantiate the left and right motors; f is front, rb is rear bottom, rt is rear top
 MotorLf = Motor(Ports.PORT3, 6/1, True)
 MotorLrt = Motor(Ports.PORT2, 6/1, False)
@@ -24,7 +24,7 @@ MotorRrb = Motor(Ports.PORT5, 6/1, False)
 
 directionCount =-1
 direction =FORWARD
-
+"""
 #intake motor
 #MotorI = Motor(Ports.PORT7, 18/1, True)
 
@@ -32,8 +32,8 @@ direction =FORWARD
 Pneumatic1 = DigitalOut(brain.three_wire_port.a)
 
 #organize the motors into motor groups
-left_group = MotorGroup(MotorLf, MotorLrb, MotorLrt)
-right_group = MotorGroup(MotorRf, MotorRrb, MotorRrt)
+#left_group = MotorGroup(MotorLf, MotorLrb, MotorLrt)
+#right_group = MotorGroup(MotorRf, MotorRrb, MotorRrt)
 
 #initialize the drivetrain and controller
 drive = DriveTrain(left_group, right_group)
