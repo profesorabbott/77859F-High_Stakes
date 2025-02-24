@@ -11,6 +11,7 @@
 from vex import *
 from movement import *
 from intake import *
+
 # Brain should be defined by default
 brain=Brain()
 
@@ -51,7 +52,7 @@ def driver_control():
         drive()
         printDetails()
         pneumatic()
-    controller.buttonR2.pressed(intake)
+        #controller.buttonR2.pressed(runIntake())
 
 def auton():
     printDetails()

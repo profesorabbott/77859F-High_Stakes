@@ -26,7 +26,7 @@ def reverseIntakeDir():
         direction = FORWARD
         intakeSpeed = 150
 
-def intake():
+def runIntake():
     if controller.buttonR1.pressing:
         wait(1,SECONDS)
         reverseIntakeDir()

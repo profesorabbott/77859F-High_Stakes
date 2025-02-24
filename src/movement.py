@@ -1,7 +1,9 @@
 from vex import *
+from src import main
 from main import *
-brain  = Brain()
 
+brain  = Brain()
+controller = Controller()
 MotorLf = Motor(Ports.PORT3, 6/1, True)
 MotorLrt = Motor(Ports.PORT2, 6/1, False)
 MotorLrb = Motor(Ports.PORT1,  6/1, True)
