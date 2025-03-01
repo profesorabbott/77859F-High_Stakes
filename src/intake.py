@@ -1,15 +1,5 @@
-from vex import *
-from movement import *
-from main import *
-
-brain = Brain()
-MotorI = Motor(Ports.PORT7, 18/1, True)
-intakeCount = -1
-
-directionCount
-intakeSpeed = 150
-
 def toggleIntake():
+    global intakeCount
     print(intakeCount)
     intakeCount *= -1
 
@@ -28,9 +18,8 @@ def reverseIntakeDir():
 
 def runIntake():
     if controller.buttonR1.pressing:
-        wait(1,SECONDS)
         reverseIntakeDir()
-        wait(0.5, SECONDS)
+        wait(1.5, SECONDS)
         
     brain.screen.print("entering the R2 loop")
     brain.screen.next_row()
